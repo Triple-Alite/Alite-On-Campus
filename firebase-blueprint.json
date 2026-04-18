@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student or Admin user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "phoneNumber": { "type": "string", "description": "Phone number" },
+        "role": { "type": "string", "enum": ["student", "student-seller", "admin"], "description": "User role" },
+        "school": { "type": "string", "description": "University name" },
+        "department": { "type": "string", "description": "Department name" },
+        "gpaHistory": { "type": "array", "description": "Array of semester results" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Lecture notes or study materials",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the material" },
+        "fileUrl": { "type": "string", "description": "Cloud storage URL" },
+        "courseCode": { "type": "string", "description": "e.g. CSC201" },
+        "school": { "type": "string", "description": "School name" },
+        "type": { "type": "string", "enum": ["note", "past_question"], "description": "Type of resource" },
+        "uploadedBy": { "type": "string", "description": "User UID" },
+        "authorName": { "type": "string", "description": "Name of the uploader" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "likes": { "type": "array", "description": "Array of user UIDs who upvoted" }
+      },
+      "required": ["title", "fileUrl", "courseCode", "type", "uploadedBy"]
+    },
+    "MarketplaceListing": {
+      "title": "MarketplaceListing",
+      "description": "Items for sale by students",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Item title" },
+        "description": { "type": "string", "description": "Item description" },
+        "price": { "type": "number", "description": "Price in Naira" },
+        "contact": { "type": "string", "description": "Phone or WhatsApp link" },
+        "imageUrl": { "type": "string", "description": "Image URL" },
+        "category": { "type": "string", "enum": ["hostel", "textbook", "gadget", "other"], "description": "Category" },
+        "uploadedBy": { "type": "string", "description": "User UID" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "price", "contact", "category", "uploadedBy"]
+    },
+    "TimetableEntry": {
+      "title": "TimetableEntry",
+      "description": "A scheduled class in the weekly timetable",
+      "type": "object",
+      "properties": {
+        "day": { "type": "string", "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] },
+        "courseCode": { "type": "string" },
+        "startTime": { "type": "string", "description": "HH:mm format" },
+        "endTime": { "type": "string", "description": "HH:mm format" },
+        "location": { "type": "string" },
+        "userId": { "type": "string" }
+      },
+      "required": ["day", "courseCode", "startTime", "endTime", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "Study materials and past questions"
+    },
+    "/listings/{listingId}": {
+      "schema": "MarketplaceListing",
+      "description": "Marketplace items"
+    },
+    "/timetable/{entryId}": {
+      "schema": "TimetableEntry",
+      "description": "User timetable entries"
+    }
+  }
+}
